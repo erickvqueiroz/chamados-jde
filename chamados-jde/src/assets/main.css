@@ -1,0 +1,107 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: #fff;
+    color: #212529;
+    font-size: 1.125rem;
+}
+
+.navbar {
+    background-color: #fff;
+    padding: 1rem 0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.navbar .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+}
+
+.nav-links a {
+    color: #032d60;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: #00acac;
+}
+
+.actions .btn-experiment, .actions .btn-entrar {
+    background: none;
+    border: none;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.main-banner {
+    background-color: #00acac;
+    padding: 4rem 1rem;
+    color: white;
+    text-align: left;
+}
+
+.main-banner .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.banner-content {
+    max-width: 50%;
+}
+
+.banner-content h1 {
+    font-size: 3rem;
+    line-height: 1.2;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.banner-content p {
+    font-size: 1.5rem;
+    font-weight: 300;
+    margin-bottom: 2rem;
+}
+
+.banner-buttons .btn-experiment, .banner-buttons .btn-fale {
+    padding: 1rem 2rem;
+    margin-right: 1rem;
+    border: none;
+    cursor: pointer;
+    font-weight: 700;
+    color: #00acac;
+    background-color: #fff;
+    transition: background-color 0.3s;
+}
+
+.banner-buttons .btn-fale {
+    background-color: transparent;
+    color: #fff;
+    border: 2px solid #fff;
+}
+
+.banner-buttons .btn-experiment:hover, .banner-buttons .btn-fale:hover {
+    background-color: #f8f9fa;
+}
+
+.banner-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 15px;
+}
