@@ -2,11 +2,11 @@
     <div class="login-container d-flex align-items-center justify-content-center">
       <div class="content-wrapper row w-100 h-100 m-0">
         <!-- Seção da Imagem -->
-        <div class="col-lg-6 d-none d-lg-flex align-items-center justify-content-center illustration-section">
+        <!-- <div class="col-lg-6 d-none d-lg-flex align-items-center justify-content-center illustration-section">
           <img :src="helpDeskImagePath" alt="Help Desk Illustration" class="illustration-img" />
           
         </div>
-  
+        -->
         <!-- Seção do Formulário -->
         <div class="col-lg-6 col-12 form-section d-flex flex-column justify-content-center align-items-center p-5">
           <div class="form-wrapper text-center">
