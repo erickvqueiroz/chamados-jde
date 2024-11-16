@@ -1,29 +1,15 @@
-import Vue from "vue";
-import Router from "vue-router";
-import Login from "@/components/Login.vue";
-import Dashboard from "@/components/Dashboard.vue";
+import { createRouter, createWebHistory } from "vue-router";
 
-Vue.use(Router);
+import Login from "@/views/Login.vue";
 
-export default new Router({
-  mode: "history",
-  routes: [
-    {
-      path: "/",
-      name: "Login",
-      component: Login,
-    },
-    {
-      path: "/dashboard",
-      name: "Dashboard",
-      component: Dashboard,
-      beforeEnter: (to, from, next) => {
-        if (localStorage.getItem("userEmail")) {
-          next();
-        } else {
-          next({ name: "Login" });
-        }
-      },
-    },
-  ],
+const routes = [
+  { path: "/", name: "Login", component: Login },
+];
+
+// Criando o roteador
+const router = createRouter({
+  history: createWebHistory(), // Habilita navegação no browser
+  routes,
 });
+
+export default router;
