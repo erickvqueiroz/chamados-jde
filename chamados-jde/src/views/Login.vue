@@ -48,8 +48,8 @@
   </template>
   
   <script>
-  import logo from "@/assets/erick.png"; // Ajuste o caminho para apontar corretamente para o arquivo de logo
-  import helpDeskImage from "@/assets/help-desk.png"; // Ajuste o caminho para apontar corretamente para a imagem help-desk
+  import logo from "@/assets/erick.png";
+  import helpDeskImage from "@/assets/help-desk.png";
   
   export default {
     name: "App",
@@ -63,10 +63,10 @@
     },
     methods: {
       handleLogin() {
-        if (this.email && this.password) {
-          alert(`Bem-vindo, ${this.email}!`);
+        if (this.email === 'teste@jderick.com' && this.password === '1234567') {
+          this.$router.push('/tickets');
         } else {
-          alert("Por favor, preencha todos os campos.");
+          alert("Credenciais incorretas!");
         }
       },
     },
