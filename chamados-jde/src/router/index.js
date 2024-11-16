@@ -2,10 +2,12 @@ import { createRouter, createWebHistory } from "vue-router";
 
 import Login from "@/views/Login.vue";
 import Index from "@/views/Tickets/Index.vue";
+import Create from "@/views/Tickets/Create.vue";
 
 const routes = [
   { path: "/", name: "Login", component: Login },
-  { path: "/tickets", name: "Tickets List", component: Index}
+  { path: "/tickets", name: "Tickets List", component: Index},
+  { path: "/tickets/create", name: "Create Ticket", component: Create}
 ];
 
 // Criando o roteador

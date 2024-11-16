@@ -9,35 +9,43 @@
 
             <div class="px-4 py-3">
                 <div class="d-flex justify-content-between pb-3">
-                    <a href="new-ticket.html" class="btn btn-primary">
+                    <button @click="createTicket()" class="btn btn-primary">
                         Novo Chamado
-                    </a>
+                    </button>
                 </div>
                 
                 <div class="table-responsive">
                     <table class="table table-striped table-bordered">
                         <thead>
                             <tr>
-                                <th>ISBN</th>
                                 <th>Título</th>
-                                <th>Páginas</th>
-                                <th>Gêneros</th>
-                                <th>Avaliação</th>
+                                <th>Descrição</th>
+                                <th>Prioridade</th>
+                                <th>Valor Estimado</th>
+                                <th>Status</th>
+                                <th>Responsável</th>
+                                <th>Categoria</th>
                                 <th>Opções</th>
                             </tr>
                         </thead>
                         
                         <tbody>
-                            <tr>
-                                <td>Teste</td>
-                                <td>Livro 1</td>
-                                <td>23</td>
-                                <td>Ação, Aventura</td>
-                                <td>5</td>
+                            <tr v-for="ticket in tickets" :key="ticket.id">
+                                <td>{{ ticket.titulo }}</td>
+                                <td>{{ ticket.descricao }}</td>
+                                <td>{{ ticket.prioridade }}</td>
+                                <td>R$ {{ ticket.valorEstimado }}</td>
+                                <td>{{ ticket.status }}</td>
+                                <td>{{ ticket.responsavel }}</td>
+                                <td>{{ ticket.categoria }}</td>
                                 <td>
-                                    <a href="#" class="btn btn-warning">
+                                    <button @click="editTicket(ticket.id)" class="btn btn-warning">
                                         Editar
-                                    </a>
+                                    </button>
+
+                                    <button @click="deleteTicket(ticket.id)" class="btn btn-danger">
+                                        Excluir
+                                    </button>
                                 </td>
                             </tr>
                         </tbody>
@@ -50,25 +58,46 @@
 
 <script>
 import logo from "@/assets/erick.png";
+import axios from "axios";
 
 export default {
     name: "App",
     data() {
         return {
-            email: "",
-            password: "",
+            tickets: [],
             logoPath: logo
         };
     },
     methods: {
-        handleLogin() {
-            if (this.email === 'teste@jderick.com' && this.password === '1234567') {
-                alert("Logou!");
-            } else {
-                alert("Credenciais incorretas!");
+        async fetchTickets() {
+            try {
+                const response = await axios.get("http://localhost:4000/api/chamados")
+                this.tickets = response.data;
+            } catch (error) {
+                alert('API fora do ar...');
             }
         },
+        createTicket() {
+            this.$router.push('/tickets/create');
+        },
+        editTicket(ticketId) {
+            this.$router.push(`/tickets/${ticketId}/edit`);
+        },
+
+        async deleteTicket(ticketId) {
+            if (confirm("Tem certeza que deseja excluir esse ticket?")) {
+                try {
+                    await axios.delete(`http://localhost:4000/api/chamados/${ticketId}`);
+                    this.fetchTickets();
+                } catch (error) {
+                    alert(error);
+                }
+            }
+        }
     },
+    mounted() {
+        this.fetchTickets();
+    }
 };
 </script>
 
