@@ -30,7 +30,7 @@
                         </thead>
                         
                         <tbody>
-                            <tr v-for="ticket in tickets" :key="ticket.id">
+                            <tr v-for="ticket in tickets" :key="ticket._id">
                                 <td>{{ ticket.titulo }}</td>
                                 <td>{{ ticket.descricao }}</td>
                                 <td>{{ ticket.prioridade }}</td>
@@ -39,11 +39,11 @@
                                 <td>{{ ticket.responsavel }}</td>
                                 <td>{{ ticket.categoria }}</td>
                                 <td>
-                                    <button @click="editTicket(ticket.id)" class="btn btn-warning">
+                                    <button @click="editTicket(ticket._id)" class="btn btn-warning">
                                         Editar
                                     </button>
 
-                                    <button @click="deleteTicket(ticket.id)" class="btn btn-danger">
+                                    <button @click="deleteTicket(ticket._id)" class="btn btn-danger">
                                         Excluir
                                     </button>
                                 </td>
@@ -88,9 +88,10 @@ export default {
             if (confirm("Tem certeza que deseja excluir esse ticket?")) {
                 try {
                     await axios.delete(`http://localhost:4000/api/chamados/${ticketId}`);
-                    this.fetchTickets();
+                    this.fetchTickets(); // Atualiza a lista de tickets após a exclusão
                 } catch (error) {
-                    alert(error);
+                    console.error('Erro ao excluir chamado:', error.response?.data || error.message);
+                    alert('Erro ao excluir o chamado. Tente novamente.');
                 }
             }
         }
