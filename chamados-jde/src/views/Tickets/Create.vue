@@ -2,8 +2,9 @@
     <div>
         <div class="h-100">
             <nav class="navbar navbar-expand-sm navbar-dark bg-custom">
-                <div class="container-fluid px-4 py-2 justify-content-center">
+                <div class="container-fluid px-4 py-2 d-flex justify-content-between">
                     <img :src="logoPath" alt="Logo JDErick" class="logo-img" />
+                    <button @click="goBack" class="btn btn-danger">Voltar</button>
                 </div>
             </nav>
 
@@ -81,9 +82,17 @@ export default {
                 await axios.post("http://localhost:4000/api/chamados", novoChamado);
                 alert("Chamado criado com sucesso!");
                 // Redireciona para a página de listagem dos chamados
-                window.location.href = "http://localhost:5173/tickets";
+                this.$router.push('/tickets');
             } catch (error) {
-                alert("Erro ao criar chamado: " + error.response.data.error);
+                alert("Erro ao criar chamado: " + (error.response?.data?.error || error.message));
+            }
+        },
+        goBack() {
+            // Confirmação antes de sair sem salvar
+            const confirmExit = confirm("Tem certeza que deseja sair sem salvar as alterações?");
+            if (confirmExit) {
+                // Redireciona para a página de listagem dos chamados sem salvar as alterações
+                this.$router.push('/tickets');
             }
         }
     }
@@ -114,5 +123,16 @@ export default {
 
 button {
     margin-top: 20px;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    border: none;
+    color: white;
+    margin-left: 10px;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
 }
 </style>

@@ -12,6 +12,9 @@
                     <button @click="createTicket()" class="btn btn-primary">
                         Novo Chamado
                     </button>
+                    <button @click="logout()" class="btn btn-danger">
+                        Sair
+                    </button>
                 </div>
                 
                 <div class="table-responsive">
@@ -83,7 +86,6 @@ export default {
         editTicket(ticketId) {
             this.$router.push(`/tickets/${ticketId}/edit`);
         },
-
         async deleteTicket(ticketId) {
             if (confirm("Tem certeza que deseja excluir esse ticket?")) {
                 try {
@@ -94,6 +96,10 @@ export default {
                     alert('Erro ao excluir o chamado. Tente novamente.');
                 }
             }
+        },
+        logout() {
+            // Redireciona o usuário para a página de login
+            this.$router.push('/');
         }
     },
     mounted() {
@@ -111,5 +117,9 @@ export default {
 
 .logo-img {
     width: 250px;
+}
+
+.btn-danger {
+    margin-left: 10px; /* Para dar um pequeno espaço ao lado do botão "Novo Chamado" */
 }
 </style>
