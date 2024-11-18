@@ -2,14 +2,25 @@
     <div>
         <div class="h-100">
             <nav class="navbar navbar-expand-sm navbar-dark bg-custom">
-                <div class="container-fluid px-4 py-2 d-flex justify-content-between">
+                <div class="container-fluid px-4 py-2 d-flex justify-content-center">
                     <img :src="logoPath" alt="Logo JDErick" class="logo-img" />
-                    <button @click="goBack" class="btn btn-danger">Voltar</button>
                 </div>
             </nav>
 
             <div class="px-4 py-3">
-                <h3 class="pb-3">Editar Chamado</h3>
+                <!-- Linha com botão e título -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3 class="m-0">Editar Chamado</h3>
+                    <button @click="goBack" class="btn btn-danger d-flex align-items-center justify-content-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="icon-btn">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+                        </svg>
+                        <span class="ms-2">Voltar</span>
+                    </button>
+                </div>
+
                 <form @submit.prevent="handleEditTicket" class="form-ticket w-50 mx-auto">
                     <div class="mb-3">
                         <label for="titulo" class="form-label">Título</label>
@@ -21,11 +32,13 @@
                     </div>
                     <div class="mb-3">
                         <label for="prioridade" class="form-label">Prioridade</label>
-                        <input type="number" v-model="prioridade" id="prioridade" class="form-control" min="1" required />
+                        <input type="number" v-model="prioridade" id="prioridade" class="form-control" min="1"
+                            required />
                     </div>
                     <div class="mb-3">
                         <label for="valorEstimado" class="form-label">Valor Estimado</label>
-                        <input type="number" v-model="valorEstimado" id="valorEstimado" class="form-control" step="0.01" required />
+                        <input type="number" v-model="valorEstimado" id="valorEstimado" class="form-control" step="0.01"
+                            required />
                     </div>
                     <div class="mb-3">
                         <label for="status" class="form-label">Status</label>
@@ -39,7 +52,25 @@
                         <label for="categoria" class="form-label">Categoria</label>
                         <input type="text" v-model="categoria" id="categoria" class="form-control" required />
                     </div>
-                    <button type="submit" class="btn btn-success w-100">Salvar Alterações</button>
+                    <div class="d-flex justify-content-between mt-4">
+                        <button type="button" @click="deleteTicket($route.params.id)"
+                            class="btn btn-danger d-flex align-items-center justify-content-center w-48">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="icon-btn">
+                                <path fill-rule="evenodd"
+                                    d="M8.75 1A2.75 2.75 0 0 0 6 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 1 0 .23 1.482l.149-.022.841 10.518A2.75 2.75 0 0 0 7.596 19h4.807a2.75 2.75 0 0 0 2.742-2.53l.841-10.52.149.023a.75.75 0 0 0 .23-1.482A41.03 41.03 0 0 0 14 4.193V3.75A2.75 2.75 0 0 0 11.25 1h-2.5ZM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4ZM8.58 7.72a.75.75 0 0 0-1.5.06l.3 7.5a.75.75 0 1 0 1.5-.06l-.3-7.5Zm4.34.06a.75.75 0 1 0-1.5-.06l-.3 7.5a.75.75 0 1 0 1.5.06l.3-7.5Z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            <span class="ms-2">Excluir</span>
+                        </button>
+                        <button type="submit" class="btn btn-success d-flex align-items-center justify-content-center w-48">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="icon-btn">
+                                <path fill-rule="evenodd"
+                                    d="M4.293 9.293a1 1 0 0 1 1.414 0L10 13.586l4.293-4.293a1 1 0 1 1 1.414 1.414l-5 5a1 1 0 0 1-1.414 0l-5-5a1 1 0 0 1 0-1.414z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            <span class="ms-2">Salvar</span>
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>
@@ -61,24 +92,20 @@ export default {
             status: "",
             responsavel: "",
             categoria: "",
-            logoPath: logo
+            logoPath: logo,
         };
     },
     created() {
-        // Carregar os dados do chamado ao montar o componente
         this.loadTicketData();
     },
     methods: {
         async loadTicketData() {
             try {
-                // Pegar o ID do chamado a partir dos parâmetros da rota
                 const id = this.$route.params.id;
 
-                // Fazer requisição GET para obter os dados do chamado
-                const response = await axios.get(`http://localhost:4000/api/chamados/id/${id}`);
-                const ticket = response.data;
+                const response = await fetch(`http://localhost:4000/api/chamados/id/${id}`);
+                const ticket = await response.json();
 
-                // Preencher o formulário com os dados do chamado
                 this.titulo = ticket.titulo;
                 this.descricao = ticket.descricao;
                 this.prioridade = ticket.prioridade;
@@ -87,12 +114,11 @@ export default {
                 this.responsavel = ticket.responsavel;
                 this.categoria = ticket.categoria;
             } catch (error) {
-                alert("Erro ao carregar chamado: " + (error.response?.data?.error || error.message));
-                this.$router.push('/tickets');
+                alert("Erro ao carregar chamado.");
+                this.goBack();
             }
         },
         async handleEditTicket() {
-            // Dados do formulário para atualizar o chamado
             const atualizadoChamado = {
                 titulo: this.titulo,
                 descricao: this.descricao,
@@ -100,36 +126,47 @@ export default {
                 valorEstimado: this.valorEstimado,
                 status: this.status,
                 responsavel: this.responsavel,
-                categoria: this.categoria
+                categoria: this.categoria,
             };
 
             try {
-                // Pegar o ID do chamado a partir dos parâmetros da rota
                 const id = this.$route.params.id;
 
-                // Fazendo a requisição PUT para atualizar o chamado
-                await axios.put(`http://localhost:4000/api/chamados/${id}`, atualizadoChamado);
+                await fetch(`http://localhost:4000/api/chamados/${id}`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(atualizadoChamado),
+                });
                 alert("Chamado atualizado com sucesso!");
-                // Redireciona para a página de listagem dos chamados
-                this.$router.push('/tickets');
+                this.$router.push("/tickets");
             } catch (error) {
-                alert("Erro ao atualizar chamado: " + (error.response?.data?.error || error.message));
+                alert("Erro ao atualizar chamado.");
+            }
+        },
+        async deleteTicket(ticketId) {
+            if (confirm("Tem certeza que deseja excluir esse ticket?")) {
+                try {
+                    await fetch(`http://localhost:4000/api/chamados/${ticketId}`, {
+                        method: "DELETE",
+                    });
+                    alert("Chamado excluído com sucesso!");
+                    this.$router.push("/tickets");
+                } catch (error) {
+                    alert("Erro ao excluir chamado.");
+                }
             }
         },
         goBack() {
-            // Confirmação antes de sair sem salvar
-            const confirmExit = confirm("Tem certeza que deseja sair sem salvar as alterações?");
-            if (confirmExit) {
-                // Redireciona para a página de listagem dos chamados sem salvar as alterações
-                this.$router.push('/tickets');
-            }
-        }
-    }
+            this.$router.push("/tickets");
+        },
+    },
 };
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap");
 
 .bg-custom {
     background-color: #0057ff;
@@ -146,21 +183,15 @@ export default {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.form-label {
+.btn-danger, .btn-success {
+    height: 45px;
+    padding: 0 20px;
+    font-size: 16px;
     font-weight: bold;
 }
 
-button {
-    margin-top: 20px;
-}
-
-.btn-danger {
-    background-color: #dc3545;
-    border: none;
-    color: white;
-}
-
-.btn-danger:hover {
-    background-color: #c82333;
+.icon-btn {
+    width: 20px;
+    height: 20px;
 }
 </style>

@@ -2,14 +2,24 @@
     <div>
         <div class="h-100">
             <nav class="navbar navbar-expand-sm navbar-dark bg-custom">
-                <div class="container-fluid px-4 py-2 d-flex justify-content-between">
+                <div class="container-fluid px-4 py-2 d-flex justify-content-center">
                     <img :src="logoPath" alt="Logo JDErick" class="logo-img" />
-                    <button @click="goBack" class="btn btn-danger">Voltar</button>
                 </div>
             </nav>
-
             <div class="px-4 py-3">
-                <h3 class="pb-3">Bem-vindo(a): Insira os dados e conclua o cadastro para conseguir acessar a plataforma.</h3>
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3 class="m-0">Bem-vindo(a): Insira os dados e conclua o cadastro para conseguir acessar a
+                        plataforma.
+                    </h3>
+                    <button @click="goBack" class="btn btn-danger d-flex align-items-center justify-content-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="icon-btn">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+                        </svg>
+                        <span class="ms-2">Voltar</span>
+                    </button>
+                </div>
                 <form @submit.prevent="handleRegisterAddress" class="form-address w-50 mx-auto">
                     <div class="mb-3">
                         <label for="fullName" class="form-label">Nome Completo</label>
