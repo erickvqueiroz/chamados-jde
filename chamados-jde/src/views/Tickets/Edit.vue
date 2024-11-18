@@ -32,17 +32,12 @@
                     </div>
                     <div class="mb-3">
                         <label for="prioridade" class="form-label">Prioridade</label>
-                        <input type="number" v-model="prioridade" id="prioridade" class="form-control" min="1"
-                            required />
-                    </div>
-                    <div class="mb-3">
-                        <label for="valorEstimado" class="form-label">Valor Estimado</label>
-                        <input type="number" v-model="valorEstimado" id="valorEstimado" class="form-control" step="0.01"
-                            required />
-                    </div>
-                    <div class="mb-3">
-                        <label for="status" class="form-label">Status</label>
-                        <input type="text" v-model="status" id="status" class="form-control" required />
+                        <select v-model="prioridade" id="prioridade" class="form-control" required>
+                            <option value="1">Baixo</option>
+                            <option value="2">Médio</option>
+                            <option value="3">Alto</option>
+                            <option value="4">Muito Alto</option>
+                        </select>
                     </div>
                     <div class="mb-3">
                         <label for="responsavel" class="form-label">Responsável</label>
@@ -50,20 +45,36 @@
                     </div>
                     <div class="mb-3">
                         <label for="categoria" class="form-label">Categoria</label>
-                        <input type="text" v-model="categoria" id="categoria" class="form-control" required />
+                        <select v-model="categoria" id="categoria" class="form-control" required>
+                            <option value="Requisição">Requisição </option>
+                            <option value="Incidente">Incidente</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="departamento" class="form-label">Departamento</label>
+                        <select v-model="departamento" id="departamento" class="form-control" required>
+                            <option value="Comercial">Comercial </option>
+                            <option value="Indústia">Indústia</option>
+                            <option value="Contabilidade">Contabilidade</option>
+                            <option value="Logística">Logística</option>
+                            <option value="SAC">SAC</option>
+                        </select>
                     </div>
                     <div class="d-flex justify-content-between mt-4">
                         <button type="button" @click="deleteTicket($route.params.id)"
                             class="btn btn-danger d-flex align-items-center justify-content-center w-48">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="icon-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                                class="icon-btn">
                                 <path fill-rule="evenodd"
                                     d="M8.75 1A2.75 2.75 0 0 0 6 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 1 0 .23 1.482l.149-.022.841 10.518A2.75 2.75 0 0 0 7.596 19h4.807a2.75 2.75 0 0 0 2.742-2.53l.841-10.52.149.023a.75.75 0 0 0 .23-1.482A41.03 41.03 0 0 0 14 4.193V3.75A2.75 2.75 0 0 0 11.25 1h-2.5ZM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4ZM8.58 7.72a.75.75 0 0 0-1.5.06l.3 7.5a.75.75 0 1 0 1.5-.06l-.3-7.5Zm4.34.06a.75.75 0 1 0-1.5-.06l-.3 7.5a.75.75 0 1 0 1.5.06l.3-7.5Z"
                                     clip-rule="evenodd" />
                             </svg>
                             <span class="ms-2">Excluir</span>
                         </button>
-                        <button type="submit" class="btn btn-success d-flex align-items-center justify-content-center w-48">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="icon-btn">
+                        <button type="submit"
+                            class="btn btn-success d-flex align-items-center justify-content-center w-48">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                                class="icon-btn">
                                 <path fill-rule="evenodd"
                                     d="M4.293 9.293a1 1 0 0 1 1.414 0L10 13.586l4.293-4.293a1 1 0 1 1 1.414 1.414l-5 5a1 1 0 0 1-1.414 0l-5-5a1 1 0 0 1 0-1.414z"
                                     clip-rule="evenodd" />
@@ -87,11 +98,10 @@ export default {
         return {
             titulo: "",
             descricao: "",
-            prioridade: 1,
-            valorEstimado: 0.00,
-            status: "",
+            prioridade: "",
             responsavel: "",
-            categoria: "",
+            categoria:"",
+            departamento:"",
             logoPath: logo,
         };
     },
@@ -109,10 +119,9 @@ export default {
                 this.titulo = ticket.titulo;
                 this.descricao = ticket.descricao;
                 this.prioridade = ticket.prioridade;
-                this.valorEstimado = ticket.valorEstimado;
-                this.status = ticket.status;
                 this.responsavel = ticket.responsavel;
                 this.categoria = ticket.categoria;
+                this.departamento = ticket.departamento;
             } catch (error) {
                 alert("Erro ao carregar chamado.");
                 this.goBack();
@@ -123,10 +132,9 @@ export default {
                 titulo: this.titulo,
                 descricao: this.descricao,
                 prioridade: this.prioridade,
-                valorEstimado: this.valorEstimado,
-                status: this.status,
                 responsavel: this.responsavel,
                 categoria: this.categoria,
+                departamento: this.departamento,
             };
 
             try {
@@ -183,7 +191,8 @@ export default {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.btn-danger, .btn-success {
+.btn-danger,
+.btn-success {
     height: 45px;
     padding: 0 20px;
     font-size: 16px;
