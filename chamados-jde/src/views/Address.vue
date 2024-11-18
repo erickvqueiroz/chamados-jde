@@ -6,11 +6,10 @@
                     <img :src="logoPath" alt="Logo JDErick" class="logo-img" />
                 </div>
             </nav>
+
             <div class="px-4 py-3">
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h3 class="m-0">Bem-vindo(a): Insira os dados e conclua o cadastro para conseguir acessar a
-                        plataforma.
-                    </h3>
+                    <h3 class="m-0">Bem-vindo(a): Insira os dados e conclua o cadastro para conseguir acessar a plataforma.</h3>
                     <button @click="goBack" class="btn btn-danger d-flex align-items-center justify-content-center">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="icon-btn">
@@ -20,6 +19,7 @@
                         <span class="ms-2">Voltar</span>
                     </button>
                 </div>
+
                 <form @submit.prevent="handleRegisterAddress" class="form-address w-50 mx-auto">
                     <div class="mb-3">
                         <label for="fullName" class="form-label">Nome Completo</label>
@@ -126,18 +126,19 @@ export default {
     font-weight: bold;
 }
 
-button {
-    margin-top: 20px;
-}
-
 .btn-danger {
-    background-color: #dc3545;
-    border: none;
-    color: white;
-    margin-left: 10px;
+    height: 45px;
+    padding: 0 20px;
+    font-size: 16px;
+    text-transform: uppercase;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.btn-danger:hover {
-    background-color: #c82333;
+.icon-btn {
+    width: 20px;
+    height: 20px;
 }
 </style>
