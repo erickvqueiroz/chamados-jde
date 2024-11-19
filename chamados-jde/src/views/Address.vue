@@ -9,7 +9,8 @@
 
             <div class="px-4 py-3">
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h3 class="m-0">Bem-vindo(a): Insira os dados e conclua o cadastro para conseguir acessar a plataforma.</h3>
+                    <h3 class="m-0">Bem-vindo(a): Insira os dados e conclua o cadastro para conseguir acessar a
+                        plataforma.</h3>
                     <button @click="goBack" class="btn btn-danger d-flex align-items-center justify-content-center">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="icon-btn">
@@ -26,12 +27,18 @@
                         <input type="text" v-model="fullName" id="fullName" class="form-control" required />
                     </div>
                     <div class="mb-3">
+                        <label for="cpf" class="form-label">CPF</label>
+                        <input type="text" v-model="cpf" @input="formatCPF" id="cpf" class="form-control" required />
+                        <small v-if="cpfError" class="text-danger">{{ cpfError }}</small>
+                    </div>
+                    <div class="mb-3">
                         <label for="age" class="form-label">Idade</label>
                         <input type="number" v-model="age" id="age" class="form-control" required />
                     </div>
                     <div class="mb-3">
                         <label for="phone" class="form-label">Telefone</label>
-                        <input type="tel" v-model="phone" id="phone" class="form-control" required />
+                        <input type="tel" v-model="phone" @input="formatPhoneNumber" id="phone" class="form-control"
+                            required />
                     </div>
                     <div class="mb-3">
                         <label for="address" class="form-label">Endereço</label>
@@ -54,7 +61,6 @@
 
 <script>
 import logo from "@/assets/erick.png";
-import axios from "axios";
 
 export default {
     name: "Address",
@@ -62,6 +68,8 @@ export default {
         return {
             fullName: "",
             age: "",
+            cpf: "",
+            cpfError: "",
             phone: "",
             address: "",
             email: "",
@@ -71,34 +79,123 @@ export default {
     },
     methods: {
         async handleRegisterAddress() {
-            // Dados do formulário para cadastrar o endereço
+            if (!this.isValidCPF(this.cpf)) {
+                this.cpfError = "CPF inválido. Por favor, insira um CPF válido.";
+                return;
+            }
+            this.cpfError = ""; // Limpa o erro se o CPF for válido
+
             const newAddress = {
                 fullName: this.fullName,
                 age: this.age,
                 phone: this.phone,
                 address: this.address,
                 email: this.email,
-                password: this.password
+                password: this.password,
+                cpf: this.cpf
             };
 
             try {
-                // Fazendo a requisição POST para cadastrar o endereço
-                await axios.post("http://localhost:4000/api/usuarios", newAddress);
+                const response = await fetch("http://localhost:4000/api/address", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(newAddress)
+                });
+
+                if (!response.ok) {
+                    throw new Error("Erro ao cadastrar endereço.");
+                }
+
                 alert("Endereço cadastrado com sucesso!");
                 // Redireciona para a página de login após o cadastro
                 window.location.href = "http://localhost:5173/";
             } catch (error) {
-                console.error('Erro ao cadastrar endereço:', error.response?.data || error.message);
+                console.error('Erro ao cadastrar endereço:', error.message);
                 alert("Erro ao cadastrar endereço. Tente novamente.");
             }
         },
         goBack() {
-            // Confirmação antes de sair sem salvar
             const confirmExit = confirm("Tem certeza que deseja sair sem salvar as alterações?");
             if (confirmExit) {
-                // Redireciona para a página de login
                 this.$router.push('/');
             }
+        },
+        formatCPF() {
+            let cleaned = ('' + this.cpf).replace(/\D/g, ''); // Remove todos os caracteres não numéricos
+            let formatted = '';
+
+            if (cleaned.length > 3) {
+                formatted += cleaned.slice(0, 3) + '.';
+            } else {
+                formatted += cleaned;
+            }
+
+            if (cleaned.length > 6) {
+                formatted += cleaned.slice(3, 6) + '.';
+            } else if (cleaned.length > 3) {
+                formatted += cleaned.slice(3);
+            }
+
+            if (cleaned.length > 9) {
+                formatted += cleaned.slice(6, 9) + '-';
+                formatted += cleaned.slice(9, 11);
+            } else if (cleaned.length > 6) {
+                formatted += cleaned.slice(6);
+            }
+
+            this.cpf = formatted;
+        },
+        isValidCPF(cpf) {
+            cpf = cpf.replace(/[\D]/g, ''); // Remove caracteres não numéricos
+
+            if (cpf.length !== 11) return false;
+
+            let sum = 0;
+            let rest;
+
+            // Verifica se todos os números são iguais (ex: 111.111.111-11)
+            if (/^(\d)\1+$/.test(cpf)) return false;
+
+            for (let i = 1; i <= 9; i++) {
+                sum += parseInt(cpf.substring(i - 1, i)) * (11 - i);
+            }
+
+            rest = (sum * 10) % 11;
+
+            if (rest === 10 || rest === 11) rest = 0;
+            if (rest !== parseInt(cpf.substring(9, 10))) return false;
+
+            sum = 0;
+            for (let i = 1; i <= 10; i++) {
+                sum += parseInt(cpf.substring(i - 1, i)) * (12 - i);
+            }
+
+            rest = (sum * 10) % 11;
+
+            if (rest === 10 || rest === 11) rest = 0;
+            if (rest !== parseInt(cpf.substring(10, 11))) return false;
+
+            return true;
+        },
+        formatPhoneNumber() {
+            let cleaned = ('' + this.phone).replace(/\D/g, '');
+            let formatted = '';
+
+            if (cleaned.length > 2) {
+                formatted = `(${cleaned.slice(0, 2)}) `;
+            } else {
+                formatted = cleaned;
+            }
+
+            if (cleaned.length > 2 && cleaned.length <= 6) {
+                formatted += cleaned.slice(2);
+            } else if (cleaned.length > 6) {
+                formatted += cleaned.slice(2, 7) + '-' + cleaned.slice(7, 11);
+            }
+
+            this.phone = formatted;
         }
     }
 };

@@ -56,14 +56,32 @@ export default {
     };
   },
   methods: {
-    handleLogin() {
-      if (this.email === 'teste@jderick.com' && this.password === '1234567') {
-        this.$router.push('/tickets');
-      } else {
-        alert("Credenciais incorretas!");
+    async handleLogin() {
+      try {
+        const response = await fetch("http://localhost:4000/api/address/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email: this.email, password: this.password }),
+        });
+
+        if (!response.ok) {
+          throw new Error("Credenciais incorretas!");
+        }
+
+        const data = await response.json();
+        if (data.success) {
+          // Redirecionar para a página de tickets se o login for bem-sucedido
+          this.$router.push("/tickets");
+        } else {
+          alert("Credenciais incorretas!");
+        }
+      } catch (error) {
+        alert(error.message);
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

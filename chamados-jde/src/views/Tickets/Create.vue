@@ -69,7 +69,6 @@
 
 <script>
 import logo from "@/assets/erick.png";
-import axios from "axios";
 
 export default {
     name: "CreateTicket",
@@ -79,8 +78,8 @@ export default {
             descricao: "",
             prioridade: "",
             responsavel: "",
-            categoria:"",
-            departamento:"",
+            categoria: "",
+            departamento: "",
             logoPath: logo,
         };
     },
@@ -96,7 +95,18 @@ export default {
             };
             console.log(novoChamado)
             try {
-                await axios.post("http://localhost:4000/api/chamados", novoChamado);
+                const response = await fetch("http://localhost:4000/api/chamados", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(novoChamado)
+                });
+
+                if (!response.ok) {
+                    throw new Error("Erro ao criar chamado.");
+                }
+
                 alert("Chamado criado com sucesso!");
                 this.$router.push("/tickets");
             } catch (error) {
@@ -111,7 +121,6 @@ export default {
     },
 };
 </script>
-
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap");
 

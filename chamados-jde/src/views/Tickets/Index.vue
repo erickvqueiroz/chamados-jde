@@ -78,7 +78,6 @@
 
 <script>
 import logo from "@/assets/erick.png";
-import axios from "axios";
 
 export default {
     name: "App",
@@ -108,10 +107,12 @@ export default {
         async deleteTicket(ticketId) {
             if (confirm("Tem certeza que deseja excluir esse ticket?")) {
                 try {
-                    await axios.delete(`http://localhost:4000/api/chamados/${ticketId}`);
+                    await fetch(`http://localhost:4000/api/chamados/${ticketId}`, {
+                        method: "DELETE"
+                    });
                     this.fetchTickets(); // Atualiza a lista de tickets após a exclusão
                 } catch (error) {
-                    console.error('Erro ao excluir chamado:', error.response?.data || error.message);
+                    console.error('Erro ao excluir chamado:', error);
                     alert('Erro ao excluir o chamado. Tente novamente.');
                 }
             }

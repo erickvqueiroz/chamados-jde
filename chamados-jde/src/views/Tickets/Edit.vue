@@ -90,7 +90,6 @@
 
 <script>
 import logo from "@/assets/erick.png";
-import axios from "axios";
 
 export default {
     name: "EditTicket",
